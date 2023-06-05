@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Claims;
+namespace WebApi;
 
 public class Cover
 {

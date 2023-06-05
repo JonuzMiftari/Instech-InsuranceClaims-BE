@@ -1,4 +1,4 @@
-﻿namespace Claims.Auditing
+﻿namespace WebApi.Auditing
 {
     public class ClaimAudit
     {

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-namespace Claims
+namespace WebApi
 {
     public class Claim
     {

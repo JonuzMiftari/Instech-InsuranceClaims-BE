@@ -1,8 +1,8 @@
-using Claims.Auditing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
+using WebApi.Auditing;
 
-namespace Claims.Controllers;
+namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

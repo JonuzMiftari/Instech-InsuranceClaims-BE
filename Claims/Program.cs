@@ -1,9 +1,7 @@
-using System.Configuration;
 using System.Text.Json.Serialization;
-using Claims.Auditing;
-using Claims.Controllers;
 using Microsoft.EntityFrameworkCore;
-
+using WebApi.Auditing;
+using WebApi.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,5 +57,3 @@ static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigur
 
     return cosmosDbService;
 }
-
-public partial class Program { }
