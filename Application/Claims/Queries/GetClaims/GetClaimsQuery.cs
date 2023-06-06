@@ -8,18 +8,18 @@ public record GetClaimsQuery : IRequest<IEnumerable<ClaimDto>>;
 
 public class GetClaimsQueryHandler : IRequestHandler<GetClaimsQuery, IEnumerable<ClaimDto>>
 {
-    private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsRepo _claimsRepo;
     private readonly IMapper _mapper;
 
-    public GetClaimsQueryHandler(IClaimsRepository claimsRepository, IMapper mapper)
+    public GetClaimsQueryHandler(IClaimsRepo claimsRepo, IMapper mapper)
     {
-        _claimsRepository = claimsRepository;
+        _claimsRepo = claimsRepo;
         _mapper = mapper;
     }
 
     public async Task<IEnumerable<ClaimDto>> Handle(GetClaimsQuery request, CancellationToken cancellationToken)
     {
-        var claims = await _claimsRepository.GetClaimsAsync();
+        var claims = await _claimsRepo.GetClaimsAsync();
         return _mapper.Map<IEnumerable<ClaimDto>>(claims);
 
         // TODO: Remove the commented code

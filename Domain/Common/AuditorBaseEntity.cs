@@ -1,5 +1,5 @@
 ﻿namespace Domain.Common;
-public abstract class AuditorBaseEntity : BaseEntity
+public abstract class AuditorBaseEntity : BaseEntity<int>
 {
     public DateTime Created { get; set; }
 

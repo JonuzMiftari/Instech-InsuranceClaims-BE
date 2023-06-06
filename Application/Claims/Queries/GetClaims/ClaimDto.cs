@@ -1,6 +1,10 @@
-﻿namespace Application.Claims.Queries.GetClaims;
+﻿using Application.Mappings;
+using AutoMapper;
+using Domain.Entities;
 
-public class ClaimDto
+namespace Application.Claims.Queries.GetClaims;
+
+public class ClaimDto : IMapFrom<Claim>
 {
     public string Id { get; set; }
 
@@ -13,4 +17,10 @@ public class ClaimDto
     public ClaimTypeDto Type { get; set; }
 
     public decimal DamageCost { get; set; }
+
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Claim, ClaimDto>()
+            .ForMember(d => d.Type , opt => opt.MapFrom(s => (int)s.Type));
+    }
 }

@@ -7,10 +7,8 @@ using MediatR;
 
 namespace Application.Claims.Commands.CreateClaim;
 
-public record CreateClaimCommand : IRequest
+public record CreateClaimCommand : IRequest<ClaimDto>
 {
-    public string Id { get; set; }
-
     public string CoverId { get; set; }
 
     public DateTime Created { get; set; }
@@ -22,21 +20,21 @@ public record CreateClaimCommand : IRequest
     public decimal DamageCost { get; set; }
 }
 
-public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand>
+public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, ClaimDto>
 {
-    private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsRepo _claimsRepo;
     private readonly IMapper _mapper;
-    public CreateClaimCommandHandler(IClaimsRepository claimsRepository, IMapper mapper)
+    public CreateClaimCommandHandler(IClaimsRepo claimsRepo, IMapper mapper)
     {
-        _claimsRepository = claimsRepository;
+        _claimsRepo = claimsRepo;
         _mapper = mapper;
     }
 
-    public async Task Handle(CreateClaimCommand request, CancellationToken cancellationToken)
+    public async Task<ClaimDto> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
     {
         var claim = new Claim
         {
-            Id = request.Id,
+            Id = Guid.NewGuid().ToString(),
             CoverId = request.CoverId,
             Created = request.Created,
             DamageCost = request.DamageCost,
@@ -44,6 +42,8 @@ public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand>
             Type = (ClaimType) request.Type
         };
 
-        await _claimsRepository.AddAsync(claim);
+        await _claimsRepo.AddAsync(claim);
+
+        return _mapper.Map<ClaimDto>(claim);
     }
 }

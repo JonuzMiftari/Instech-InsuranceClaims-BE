@@ -1,13 +1,13 @@
-﻿using Domain.Enums;
+﻿using Domain.Common;
+using Domain.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Domain.Entities;
-[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-public class Claim
-{
-    public string Id { get; set; }
 
+[JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
+public class Claim : BaseEntity<string>
+{
     public string CoverId { get; set; }
 
     public DateTime Created { get; set; }

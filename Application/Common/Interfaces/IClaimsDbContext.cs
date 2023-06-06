@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Common.Interfaces;
 
-public interface IAuditorDbContext
+public interface IClaimsDbContext
 {
-    DbSet<ClaimAudit> ClaimAudits { get; }
+    DbSet<Claim>? Claims { get; }
 
-    DbSet<CoverAudit> CoverAudits { get; }
+    DbSet<Cover>? Covers { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

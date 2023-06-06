@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using MediatR;
 
 namespace Application.Claims.Commands.DeleteClaim;
@@ -8,15 +7,15 @@ public record DeleteClaimCommand(string Id) : IRequest;
 
 public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand>
 {
-    private readonly IClaimsRepository _claimsRepository;
+    private readonly IClaimsRepo _claimsRepo;
 
-    public DeleteClaimCommandHandler(IClaimsRepository claimsRepository)
+    public DeleteClaimCommandHandler(IClaimsRepo claimsRepo)
     {
-        _claimsRepository = claimsRepository;
+        _claimsRepo = claimsRepo;
     }
     
     public async Task Handle(DeleteClaimCommand request, CancellationToken cancellationToken)
     {
-        await _claimsRepository.DeleteAsync(request.Id);
+        await _claimsRepo.DeleteAsync(request.Id);
     }
 }
