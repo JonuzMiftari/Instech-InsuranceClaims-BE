@@ -1,5 +1,6 @@
 using Application.Claims.Commands.CreateClaim;
 using Application.Claims.Commands.DeleteClaim;
+using Application.Claims.Dto;
 using Application.Claims.Queries.GetClaims;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,18 +14,18 @@ public class ClaimsController : ApiControllerBase
         => _logger = logger;
 
     [HttpGet]
-    public Task<IEnumerable<ClaimDto>> GetAsync() 
-        => Mediator.Send(new GetClaimsQuery());
+    public async Task<ActionResult<IEnumerable<ClaimDto>>> GetAsync()
+        => Ok(await Mediator.Send(new GetClaimsQuery()));
 
     [HttpGet("{id}")]
-    public Task<ClaimDto> GetAsync(string id) 
-        => Mediator.Send(new GetClaimByIdQuery(id));
+    public async Task<ClaimDto> GetAsync(string id) 
+        => await Mediator.Send(new GetClaimByIdQuery(id));
 
     [HttpPost]
-    public async Task<ActionResult<ClaimDto>> CreateAsync(CreateClaimCommand command) 
-        => Ok(await Mediator.Send(command));
+    public async Task<ActionResult<ClaimDto>> CreateAsync(CreateClaimCommand createClaimCommand) 
+        => Ok(await Mediator.Send(createClaimCommand));
 
     [HttpDelete("{id}")]
-    public Task DeleteAsync(string id) 
-        => Mediator.Send(new DeleteClaimCommand(id));
+    public async Task DeleteAsync(string id)
+        => await Mediator.Send(new DeleteClaimCommand(id));
 }

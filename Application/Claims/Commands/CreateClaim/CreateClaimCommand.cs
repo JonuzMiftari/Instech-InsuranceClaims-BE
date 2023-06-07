@@ -1,4 +1,4 @@
-﻿using Application.Claims.Queries.GetClaims;
+﻿using Application.Claims.Dto;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -22,28 +22,28 @@ public record CreateClaimCommand : IRequest<ClaimDto>
 
 public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, ClaimDto>
 {
-    private readonly IClaimsRepo _claimsRepo;
+    private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMapper _mapper;
-    public CreateClaimCommandHandler(IClaimsRepo claimsRepo, IMapper mapper)
+    public CreateClaimCommandHandler(IClaimsDbContext claimsDbContext, IMapper mapper)
     {
-        _claimsRepo = claimsRepo;
+        _claimsDbContext = claimsDbContext;
         _mapper = mapper;
     }
 
     public async Task<ClaimDto> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
     {
-        var claim = new Claim
+        var entity = new Claim
         {
             Id = Guid.NewGuid().ToString(),
             CoverId = request.CoverId,
             Created = request.Created,
             DamageCost = request.DamageCost,
             Name = request.Name,
-            Type = (ClaimType) request.Type
+            Type = (ClaimType)request.Type
         };
 
-        await _claimsRepo.AddAsync(claim);
-
-        return _mapper.Map<ClaimDto>(claim);
+        await _claimsDbContext.Claims.AddAsync(entity, cancellationToken);
+        await _claimsDbContext.SaveChangesAsync(cancellationToken);
+        return _mapper.Map<ClaimDto>(entity);
     }
 }

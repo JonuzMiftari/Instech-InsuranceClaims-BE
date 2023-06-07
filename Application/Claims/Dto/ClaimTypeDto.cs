@@ -1,7 +1,7 @@
 ﻿using Application.Mappings;
 using Domain.Enums;
 
-namespace Application.Claims.Queries.GetClaims;
+namespace Application.Claims.Dto;
 
 public enum ClaimTypeDto
 {

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit;
-
-namespace Claims.Tests
+﻿namespace WebUI.Tests
 {
     public class ClaimsControllerTests
     {

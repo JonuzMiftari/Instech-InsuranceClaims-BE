@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Premiums;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,9 +24,8 @@ public static class ConfigureServices
         services.AddScoped<IClaimsDbContext>(provider => provider.GetRequiredService<ClaimsDbContext>());
 
         services.AddScoped<ClaimsDbContextInitialiser>();
-
-        services.AddScoped<IClaimsRepo, ClaimsRepo>();
-        // services.AddScoped<IClaimsRepository, ClaimsRepository>();
+        
+        services.AddSingleton<PremiumCalculator>();
 
         return services;
     }

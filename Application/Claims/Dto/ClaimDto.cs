@@ -2,7 +2,7 @@
 using AutoMapper;
 using Domain.Entities;
 
-namespace Application.Claims.Queries.GetClaims;
+namespace Application.Claims.Dto;
 
 public class ClaimDto : IMapFrom<Claim>
 {
@@ -21,6 +21,6 @@ public class ClaimDto : IMapFrom<Claim>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Claim, ClaimDto>()
-            .ForMember(d => d.Type , opt => opt.MapFrom(s => (int)s.Type));
+            .ForMember(d => d.Type, opt => opt.MapFrom(s => (int)s.Type));
     }
 }
