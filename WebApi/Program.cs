@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using WebApi.Auditing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +12,6 @@ builder.Services.AddControllers().AddJsonOptions(x =>
     }
 );
 
-//builder.Services.AddSingleton(
-//    InitializeCosmosClientInstanceAsync(builder.Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-
-// builder.Services.AddDbContext<AuditContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
@@ -46,10 +40,10 @@ using (var scope = app.Services.CreateScope())
     await context.InitialiseAsync();
 }
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    var context = scope.ServiceProvider.GetRequiredService<AuditContext>();
-//    context.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var auditorInitializer = scope.ServiceProvider.GetRequiredService<AuditorDbContextInitialiser>();
+    await auditorInitializer.InitialiseAsync();
+}
 
 app.Run();

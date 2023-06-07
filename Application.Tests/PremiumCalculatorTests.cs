@@ -1,5 +1,4 @@
 using Application.Premiums;
-using Claims.Tests;
 using Domain.Enums;
 using FluentAssertions;
 

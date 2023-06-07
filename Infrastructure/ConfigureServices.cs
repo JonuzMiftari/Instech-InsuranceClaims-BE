@@ -23,6 +23,10 @@ public static class ConfigureServices
 
         services.AddScoped<IClaimsDbContext>(provider => provider.GetRequiredService<ClaimsDbContext>());
 
+        services.AddDbContext<AuditorDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                builder => builder.MigrationsAssembly(typeof(AuditorDbContext).Assembly.FullName)));
+
         services.AddScoped<ClaimsDbContextInitialiser>();
         
         services.AddSingleton<PremiumCalculator>();
