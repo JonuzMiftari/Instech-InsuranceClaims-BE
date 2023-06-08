@@ -1,9 +1,11 @@
 ﻿using Application.Claims.Dto;
 using Application.Common.Interfaces;
+using Application.MessagingContracts;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Claims.Commands.CreateClaim;
 
@@ -24,8 +26,17 @@ public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, Cla
 {
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMapper _mapper;
-    public CreateClaimCommandHandler(IClaimsDbContext claimsDbContext, IMapper mapper)
+        private readonly IMessagePublisher _messagePublisher;
+        private readonly ILogger _logger;
+
+        public CreateClaimCommandHandler(
+            IClaimsDbContext claimsDbContext, 
+            IMapper mapper, 
+            IMessagePublisher messagePublisher, 
+            ILogger logger)
     {
+        _messagePublisher = messagePublisher;
+        _logger = logger;
         _claimsDbContext = claimsDbContext;
         _mapper = mapper;
     }
@@ -44,6 +55,11 @@ public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, Cla
 
         await _claimsDbContext.Claims.AddAsync(entity, cancellationToken);
         await _claimsDbContext.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Claim created with ID: {ClaimId}", entity.Id);
+
+        await _messagePublisher.Publish(new ClaimCreated(entity.Id), cancellationToken);
+        
         return _mapper.Map<ClaimDto>(entity);
     }
 }

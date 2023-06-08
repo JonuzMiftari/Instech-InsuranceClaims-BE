@@ -1,9 +1,11 @@
 ﻿using Application.Common.Interfaces;
 using Application.Covers.Dto;
+using Application.MessagingContracts;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Covers.Commands.CreateCover;
 
@@ -22,11 +24,19 @@ public class CreateCoverCommandHandler : IRequestHandler<CreateCoverCommand, Cov
 {
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMapper _mapper;
+    private readonly IMessagePublisher _messagePublisher;
+    private readonly ILogger _logger;
 
-    public CreateCoverCommandHandler(IClaimsDbContext claimsDbContext, IMapper mapper)
+    public CreateCoverCommandHandler(
+        IClaimsDbContext claimsDbContext, 
+        IMapper mapper, 
+        IMessagePublisher messagePublisher, 
+        ILogger logger)
     {
         _claimsDbContext = claimsDbContext;
         _mapper = mapper;
+        _messagePublisher = messagePublisher;
+        _logger = logger;
     }
 
     public async Task<CoverDto> Handle(CreateCoverCommand request, CancellationToken cancellationToken)
@@ -42,6 +52,11 @@ public class CreateCoverCommandHandler : IRequestHandler<CreateCoverCommand, Cov
 
         await _claimsDbContext.Covers.AddAsync(entity, cancellationToken);
         await _claimsDbContext.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Cover created with ID: {ClaimId}", entity.Id);
+        
+        await _messagePublisher.Publish(new CoverCreated(entity.Id), cancellationToken);
+
         return _mapper.Map<CoverDto>(entity);
     }
 }

@@ -1,6 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Reflection;
+using Application.Common.Interfaces;
 using Application.Premiums;
+using Infrastructure.Messaging;
+using Infrastructure.Messaging.Consumers;
 using Infrastructure.Persistence;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +13,8 @@ namespace Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, 
+        IConfiguration configuration)
     {
         var configurationSection = configuration.GetSection("CosmosDb");
         string accountEndpoint = configurationSection.GetSection("Account").Value;
@@ -28,8 +33,29 @@ public static class ConfigureServices
                 builder => builder.MigrationsAssembly(typeof(AuditorDbContext).Assembly.FullName)));
 
         services.AddScoped<ClaimsDbContextInitialiser>();
-        
+
         services.AddSingleton<PremiumCalculator>();
+
+        services.AddMassTransit(x =>
+        {
+            // TODO: Remove commented code
+            //x.SetKebabCaseEndpointNameFormatter();
+            //x.SetInMemorySagaRepositoryProvider();
+
+            var assembly = typeof(ClaimCreatedConsumer).Assembly;
+
+            x.AddConsumers(assembly);
+            //x.AddSagaStateMachines(assembly);
+            //x.AddSagas(assembly);
+            //x.AddActivities(assembly);
+
+            x.UsingInMemory((context, cfg) =>
+            {
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
+        services.AddScoped<IMessagePublisher, MessagePublisher>();
 
         return services;
     }
