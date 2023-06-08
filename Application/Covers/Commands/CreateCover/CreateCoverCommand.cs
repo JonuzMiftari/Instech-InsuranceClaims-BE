@@ -25,13 +25,13 @@ public class CreateCoverCommandHandler : IRequestHandler<CreateCoverCommand, Cov
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMapper _mapper;
     private readonly IMessagePublisher _messagePublisher;
-    private readonly ILogger _logger;
+    private readonly ILogger<CreateCoverCommandHandler> _logger;
 
     public CreateCoverCommandHandler(
         IClaimsDbContext claimsDbContext, 
         IMapper mapper, 
         IMessagePublisher messagePublisher, 
-        ILogger logger)
+        ILogger<CreateCoverCommandHandler> logger)
     {
         _claimsDbContext = claimsDbContext;
         _mapper = mapper;

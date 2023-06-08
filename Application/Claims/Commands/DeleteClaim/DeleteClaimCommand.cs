@@ -12,12 +12,12 @@ public class DeleteClaimCommandHandler : IRequestHandler<DeleteClaimCommand>
 {
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMessagePublisher _messagePublisher;
-    private readonly ILogger _logger;
+    private readonly ILogger<DeleteClaimCommandHandler> _logger;
 
     public DeleteClaimCommandHandler(
         IClaimsDbContext claimsDbContext,
         IMessagePublisher messagePublisher,
-        ILogger logger)
+        ILogger<DeleteClaimCommandHandler> logger)
     {
         _claimsDbContext = claimsDbContext;
         _messagePublisher = messagePublisher;

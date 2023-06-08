@@ -32,22 +32,20 @@ public static class ConfigureServices
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(AuditorDbContext).Assembly.FullName)));
 
+        services.AddScoped<IAuditorDbContext>(provider => provider.GetRequiredService<AuditorDbContext>());
+
         services.AddScoped<ClaimsDbContextInitialiser>();
+
+        services.AddScoped<AuditorDbContextInitialiser>();
 
         services.AddSingleton<PremiumCalculator>();
 
         services.AddMassTransit(x =>
         {
-            // TODO: Remove commented code
-            //x.SetKebabCaseEndpointNameFormatter();
-            //x.SetInMemorySagaRepositoryProvider();
 
-            var assembly = typeof(ClaimCreatedConsumer).Assembly;
+            var assembly = Assembly.GetExecutingAssembly();
 
             x.AddConsumers(assembly);
-            //x.AddSagaStateMachines(assembly);
-            //x.AddSagas(assembly);
-            //x.AddActivities(assembly);
 
             x.UsingInMemory((context, cfg) =>
             {

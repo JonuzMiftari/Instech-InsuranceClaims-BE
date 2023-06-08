@@ -8,9 +8,9 @@ namespace Infrastructure.Messaging.Consumers;
 public class ClaimDeletedConsumer : IConsumer<ClaimDeleted>
 {
     private readonly IAuditorDbContext _dbContext;
-    private readonly ILogger _logger;
+    private readonly ILogger<ClaimDeletedConsumer> _logger;
 
-    public ClaimDeletedConsumer(IAuditorDbContext dbContext, ILogger logger)
+    public ClaimDeletedConsumer(IAuditorDbContext dbContext, ILogger<ClaimDeletedConsumer> logger)
     {
         _dbContext = dbContext;
         _logger = logger;

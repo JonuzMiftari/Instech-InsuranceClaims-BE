@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Covers.Commands.CreateCover;
 using Application.MessagingContracts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +13,9 @@ public class DeleteCoverCommandHandler : IRequestHandler<DeleteCoverCommand>
 {
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMessagePublisher _messagePublisher;
-    private readonly ILogger _logger;
+    private readonly ILogger<CreateCoverCommandHandler> _logger;
 
-    public DeleteCoverCommandHandler(IClaimsDbContext claimsDbContext, IMessagePublisher messagePublisher, ILogger logger)
+    public DeleteCoverCommandHandler(IClaimsDbContext claimsDbContext, IMessagePublisher messagePublisher, ILogger<CreateCoverCommandHandler> logger)
     {
         _claimsDbContext = claimsDbContext;
         _messagePublisher = messagePublisher;

@@ -8,9 +8,9 @@ namespace Infrastructure.Messaging.Consumers;
 public class CoverCreatedConsumer : IConsumer<CoverCreated>
 {
     private readonly IAuditorDbContext _dbContext;
-    private readonly ILogger _logger;
+    private readonly ILogger<CoverCreatedConsumer> _logger;
 
-    public CoverCreatedConsumer(IAuditorDbContext dbContext, ILogger logger)
+    public CoverCreatedConsumer(IAuditorDbContext dbContext, ILogger<CoverCreatedConsumer> logger)
     {
         _dbContext = dbContext;
         _logger = logger;
@@ -22,7 +22,7 @@ public class CoverCreatedConsumer : IConsumer<CoverCreated>
         {
             CoverId = context.Message.Id,
             Created = DateTime.Now,
-            HttpRequestType = HttpRequestType.Delete
+            HttpRequestType = HttpRequestType.Post
         };
 
         await _dbContext.CoverAudits.AddAsync(entity);

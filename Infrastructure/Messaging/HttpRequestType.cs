@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Messaging.Consumers;
+﻿namespace Infrastructure.Messaging;
 
 public static class HttpRequestType
 {

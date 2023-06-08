@@ -27,13 +27,13 @@ public class CreateClaimCommandHandler : IRequestHandler<CreateClaimCommand, Cla
     private readonly IClaimsDbContext _claimsDbContext;
     private readonly IMapper _mapper;
         private readonly IMessagePublisher _messagePublisher;
-        private readonly ILogger _logger;
+        private readonly ILogger<CreateClaimCommandHandler> _logger;
 
         public CreateClaimCommandHandler(
             IClaimsDbContext claimsDbContext, 
             IMapper mapper, 
-            IMessagePublisher messagePublisher, 
-            ILogger logger)
+            IMessagePublisher messagePublisher,
+            ILogger<CreateClaimCommandHandler> logger)
     {
         _messagePublisher = messagePublisher;
         _logger = logger;
