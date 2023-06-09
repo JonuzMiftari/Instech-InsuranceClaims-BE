@@ -5,6 +5,8 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]/[action]")]
+[Consumes("application/json")]
+[Produces("application/json")]
 public abstract class ApiControllerBase : ControllerBase
 {
     private ISender? _mediator;
