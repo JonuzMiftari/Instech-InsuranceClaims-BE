@@ -1,3 +1,16 @@
+# How to run the code
+
+In order to run the code, two things need to be done:
+
+1. Have Azure Cosmos DB Emulator running
+2. Execute EF core commands to create the Database and the tables
+
+```
+
+Update-Database -Context Infrastructure.Persistence.AuditorDbContext
+
+```
+
 # Read this first!
 This repository is a template repository for our technical interview, so create your own project using this guide:
 
