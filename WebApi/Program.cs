@@ -1,12 +1,17 @@
 using System.Text.Json.Serialization;
 using Application;
+using FluentValidation.AspNetCore;
 using Infrastructure;
 using Infrastructure.Persistence;
+using WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers().AddJsonOptions(x =>
+builder.Services.AddControllers(options =>
+        options.Filters.Add<ApiExceptionFilterAttribute>())
+    .AddFluentValidation(x => x.AutomaticValidationEnabled = false)
+    .AddJsonOptions(x =>
     {
         x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     }
